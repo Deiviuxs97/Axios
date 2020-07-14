@@ -7,7 +7,7 @@ import NewPost from "../../components/NewPost/NewPost";
 import "./Blog.module.css";
 
 interface el {
-  id: number;
+  // id: number;
 }
 
 class Blog extends Component<el> {
@@ -26,16 +26,15 @@ class Blog extends Component<el> {
         };
       });
       this.setState({ posts: updatedPosts });
-      //console.log(response);
     });
   }
 
-  postSelectedHandler = (id) => {
+  postSelectedHandler = (id: number) => {
     this.setState({ selectedPostId: id });
   };
 
   render() {
-    const posts = this.state.posts.map((post) => {
+    const posts = this.state.posts.map((post: any) => {
       return (
         <Post
           key={post.id}

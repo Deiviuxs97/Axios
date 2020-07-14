@@ -4,9 +4,18 @@ import axios from "axios";
 import "./FullPost.module.css";
 import post from "../Post/Post";
 
-class FullPost extends Component {
+interface pop {
+  id: any;
+  // loadedPost: undefined;
+}
+
+class FullPost extends Component<pop> {
   state = {
-    loadedPost: null,
+    loadedPost: {
+      id: 0,
+      title: "",
+      body: "",
+    },
   };
 
   componentDidUpdate() {
