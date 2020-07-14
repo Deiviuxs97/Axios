@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axios";
 
 import Post from "../../components/Post/Post";
 import FullPost from "../../components/FullPost/FullPost";
@@ -14,19 +15,26 @@ class Blog extends Component<el> {
   state = {
     posts: [],
     selectedPostId: null,
+    error: false,
   };
 
   componentDidMount() {
-    axios.get("https://jsonplaceholder.typicode.com/posts").then((response) => {
-      const posts = response.data.slice(0, 4);
-      const updatedPosts = posts.map((post: any) => {
-        return {
-          ...post,
-          author: "Max",
-        };
+    axios
+      .get("/posts")
+      .then((response) => {
+        const posts = response.data.slice(0, 4);
+        const updatedPosts = posts.map((post: any) => {
+          return {
+            ...post,
+            author: "Max",
+          };
+        });
+        this.setState({ posts: updatedPosts });
+      })
+      .catch((error) => {
+        // console.log(error);
+        this.setState({ error: true });
       });
-      this.setState({ posts: updatedPosts });
-    });
   }
 
   postSelectedHandler = (id: number) => {
@@ -34,16 +42,19 @@ class Blog extends Component<el> {
   };
 
   render() {
-    const posts = this.state.posts.map((post: any) => {
-      return (
-        <Post
-          key={post.id}
-          title={post.title}
-          author={post.author}
-          clicked={() => this.postSelectedHandler(post.id)}
-        />
-      );
-    });
+    let posts = <p style={{ textAlign: "center" }}>Something went wrong!</p>;
+    if (!this.state.error) {
+      let posts = this.state.posts.map((post: any) => {
+        return (
+          <Post
+            key={post.id}
+            title={post.title}
+            author={post.author}
+            clicked={() => this.postSelectedHandler(post.id)}
+          />
+        );
+      });
+    }
     return (
       <div>
         <section className="Posts">{posts}</section>
